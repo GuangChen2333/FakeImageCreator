@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fake Image Creator</title>
+        <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+        <link href="https://cdn.staticfile.org/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+                background-color: #FEFDFF;
+                height: 100%;
+                width: 100%;
+            }
+
+            body {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .title {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                margin-top: calc(100% - 98%);
+                line-height: 35px;
+            }
+
+            .main {
+                margin-top: 20%;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                border: white;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="title">
+            <p class="fs-1 fw-light">Fake Image Creator</p>
+            <p class="fs-5 fw-lighter">By Guang_Chen_</p>
+        </div>
+        <div class="main">
+            <button type="button" class="btn btn-primary btn-lg" id="generate">
+                <span class="spinner-border spinner-border-sm" role="status" id="loading" hidden></span>
+                Generate!
+            </button>
+        </div>
+        <script type="text/javascript">
+            Date.prototype.format = function (fmt) {
+                var o = {
+                    "M+": this.getMonth() + 1,
+                    "d+": this.getDate(),
+                    "h+": this.getHours(),
+                    "m+": this.getMinutes(),
+                    "s+": this.getSeconds(),
+                    "q+": Math.floor((this.getMonth() + 3) / 3),
+                    "S": this.getMilliseconds()
+                };
+
+                if (/(y+)/i.test(fmt)) {
+                    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                }
+
+                for (var k in o) {
+                    if (new RegExp("(" + k + ")", "i").test(fmt)) {
+                    fmt = fmt.replace(
+                        RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    }
+                }
+                return fmt;
+            }
+
+            function generateRamStr(len) {
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                let randomStr = "";
+                for (var i = 0; i < len; i++) {
+                    randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return randomStr;
+            }
+            
+            function download(filename, content) {
+                return new Promise(resolve => {
+                    var element = document.createElement('a')
+                    element.setAttribute("href", "data:image/png;base64," + content)
+                    element.setAttribute("download", filename)
+                    element.style.display = 'none';
+                    document.body.appendChild(element)
+                    element.click()
+                    document.body.removeChild(element)
+                    resolve()
+                })
+            }
+            
+            function getFileName() {
+                var now = new Date()
+                return now.format("YYYY-MM-DD hh_mm_ss") + ".png"
+            }
+
+            function getFileSize() {
+                return Math.floor(Math.random()*1000000+2000000)
+            }
+
+            $(generate).click(async function(){
+                $(loading).attr("hidden", false)
+                $(generate).attr("disabled", true)
+                await download(getFileName(), generateRamStr(getFileSize()))
+                $(loading).attr("hidden", true)
+                $(generate).attr("disabled", false)
+            })
+        </script>
+    </body>
+</html>
