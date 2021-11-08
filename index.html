@@ -20,6 +20,7 @@
                 display: flex;
                 align-items: center;
                 flex-direction: column;
+                justify-content: space-between
             }
 
             .title {
@@ -31,15 +32,22 @@
             }
 
             .main {
-                margin-top: 20%;
                 display: flex;
                 align-items: center;
                 flex-direction: column;
                 border: white;
             }
 
+            .footer {
+                display: flex;
+                justify-content: center;
+                align-content: space-around;
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+
             .tips {
-                margin-top: 15px;
+                font-size: smaller;
                 text-align: center;
             }
         </style>
@@ -55,7 +63,10 @@
                 <span class="spinner-border spinner-border-sm" role="status" id="loading" hidden></span>
                 Generate!
             </button>
-            <p class="tips fs-6 fw-lighter">请在浏览器中打开，部分浏览器可能不支持下载本程序生成的图片，更换浏览器下载即可</p>
+        </div>
+        <div class="footer">
+            <p class="tips fw-lighter">请在浏览器中打开，部分浏览器可能不支持下载本程序生成的图片，更换浏览器下载即可</p>
+            <p class="tips fw-lighter">请适度使用</p>
         </div>
         <script type="text/javascript">
             Date.prototype.format = function (fmt) {
