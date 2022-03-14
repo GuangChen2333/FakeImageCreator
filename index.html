@@ -8,6 +8,11 @@
         <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
         <link href="https://cdn.staticfile.org/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
         <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
             html, body {
                 padding: 0;
                 margin: 0;
@@ -27,12 +32,13 @@
                 display: flex;
                 align-items: center;
                 flex-direction: column;
-                margin-top: calc(100% - 98%);
+                margin-top: 5px;
                 line-height: 35px;
             }
 
             .main {
                 display: flex;
+                margin-top: -5px;
                 align-items: center;
                 flex-direction: column;
                 border: white;
@@ -50,23 +56,27 @@
                 font-size: smaller;
                 text-align: center;
             }
+
+            .subtitle {
+                opacity: 0.8;   
+            }
         </style>
     </head>
     
     <body>
         <div class="title">
             <p class="fs-1 fw-light">Fake Image Creator</p>
-            <p class="fs-5 fw-lighter">By Guang_Chen_</p>
+            <p class="fs-5 fw-lighter subtitle">By Guang_Chen_</p>
         </div>
         <div class="main">
             <button type="button" class="btn btn-primary btn-lg" id="generate">
-                <span class="spinner-border spinner-border-sm" role="status" id="loading" hidden></span>
-                Generate!
+                生成
             </button>
         </div>
         <div class="footer">
-            <p class="tips fw-lighter">请在浏览器中打开，部分浏览器可能不支持下载本程序生成的图片，更换浏览器下载即可</p>
-            <p class="tips fw-lighter">请适度使用本工具，由本工具造成的一切后果作者概不负责</p>
+            <p class="tips fw-lighter">
+                请在浏览器中打开，部分浏览器可能不支持下载本程序生成的图片，更换浏览器下载即可
+            </p>
         </div>
         <script type="text/javascript">
             Date.prototype.format = function (fmt) {
@@ -103,16 +113,13 @@
             }
             
             function download(filename, content) {
-                return new Promise(resolve => {
-                    var element = document.createElement('a')
-                    element.setAttribute("href", "data:image/png;base64," + content)
-                    element.setAttribute("download", filename)
-                    element.style.display = 'none';
-                    document.body.appendChild(element)
-                    element.click()
-                    document.body.removeChild(element)
-                    resolve()
-                })
+                var element = document.createElement('a')
+                element.setAttribute("href", "data:image/png;charset=UTF-8," + content)
+                element.setAttribute("download", filename)
+                element.style.display = 'none';
+                document.body.appendChild(element)
+                element.click()
+                document.body.removeChild(element)
             }
             
             function getFileName() {
@@ -123,12 +130,10 @@
             function getFileSize() {
                 return Math.floor(Math.random()*1000000+2000000)
             }
-
-            $(generate).click(async function(){
-                $(loading).attr("hidden", false)
+            
+            $(generate).click(function(){
                 $(generate).attr("disabled", true)
-                await download(getFileName(), generateRamStr(getFileSize()))
-                $(loading).attr("hidden", true)
+                download(getFileName(), generateRamStr(getFileSize()))
                 $(generate).attr("disabled", false)
             })
         </script>
