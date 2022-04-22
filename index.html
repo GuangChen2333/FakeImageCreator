@@ -70,6 +70,7 @@
         </div>
         <div class="main">
             <button type="button" class="btn btn-primary btn-lg" id="generate">
+                <span class="spinner-border spinner-border-sm" role="status" id="loading" hidden></span>
                 生成
             </button>
         </div>
@@ -133,8 +134,12 @@
             
             $(generate).click(function(){
                 $(generate).attr("disabled", true)
-                download(getFileName(), generateRamStr(getFileSize()))
-                $(generate).attr("disabled", false)
+                $(loading).attr("hidden", false)
+                setTimeout(() => {
+                    download(getFileName(), generateRamStr(getFileSize()))  
+                    $(generate).attr("disabled", false)
+                    $(loading).attr("hidden", true)
+                }, 10)
             })
         </script>
     </body>
